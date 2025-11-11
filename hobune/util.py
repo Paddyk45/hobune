@@ -13,13 +13,6 @@ def generate_meta_tags(meta):
         h += f'<meta name="{m}" content="{html.escape(meta[m])}">'
     return h
 
-def generate_meta_property_tags(meta):
-    h = ""
-    for m in meta:
-        h += f'<meta property="{m}" content="{html.escape(meta[m])}">'
-    return h
-
-
 # Quotes URL and fixes backslashes if necessary
 def quote_url(url):
     if os.path.sep == "\\":

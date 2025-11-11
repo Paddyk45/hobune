@@ -33,24 +33,11 @@ def create_video_pages(config, channels, templates, html_ext):
             try:
                 with open(os.path.join(root, file), "r") as f:
                     v = json.load(f)
-
-                # Set mp4 path
-                mp4path = f"{os.path.join(config.files_web_path + root[len(config.files_path):], base)}.mp4"
-                for ext in ["mp4", "webm", "mkv"]:
-                    if f"{base}.{ext}" in files:
-                        mp4path = f"{os.path.join(config.files_web_path + root[len(config.files_path):], base)}.{ext}"
-                        break
                         
                 page_meta = generate_meta_tags(
                     {
                         "description": v['description'][:256],
                         "author": get_channel_name(v)
-                    }
-                )
-
-                page_meta += generate_meta_property_tags(
-                    {
-                        "og:video": quote_url(mp4path)
                     }
                 )
                 
@@ -59,11 +46,17 @@ def create_video_pages(config, channels, templates, html_ext):
                 comments_link = ""
                 if comments_html:
                     with open(os.path.join(config.output_path, f"comments/{no_traverse(v['id'])}.html"), "w") as f:
-                        f.write(templates["base"].format(title=html.escape(v['title'] + ' - Comments'), meta=page_meta+page_properties,
+                        f.write(templates["base"].format(title=html.escape(v['title'] + ' - Comments'), meta=page_meta,
                                                          content=comments_html))
                     comments_link = f'<p class="comments"><a href="/comments/{v["id"]}{html_ext}">View comments ({comments_count})</a></p>'
 
-
+                # Set mp4 path
+                mp4path = f"{os.path.join(config.files_web_path + root[len(config.files_path):], base)}.mp4"
+                for ext in ["mp4", "webm", "mkv"]:
+                    if f"{base}.{ext}" in files:
+                        mp4path = f"{os.path.join(config.files_web_path + root[len(config.files_path):], base)}.{ext}"
+                        break
+                        
                 # Get thumbnail path
                 thumbnail = "/default.png"
                 for ext in ["webp", "jpg", "png"]:

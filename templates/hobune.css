@@ -387,15 +387,11 @@ p {
 }
 
 .removed {
-  background-color: #ffb4df;
+  background-color: #542121;
 }
 
 .unlisted {
     background-color: #555247;
-}
-
-.removed.unlisted {
-    background-color: #ffa1a1;
 }
 
 .thumbnail {

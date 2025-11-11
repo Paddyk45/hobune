@@ -5,7 +5,7 @@ import os
 from hobune.channels import is_full_channel, get_channel_name
 from hobune.comments import getCommentsHTML
 from hobune.logger import logger
-from hobune.util import generate_meta_tags, generate_meta_property_tags, quote_url, no_traverse
+from hobune.util import generate_meta_tags, quote_url, no_traverse
 
 
 def generate_download_button(name, url, prefix="/dl"):

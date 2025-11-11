@@ -222,7 +222,7 @@ def create_channel_pages(config, templates, channels, html_ext):
                       </div>
                       <div class="content{' removed' if v["removed"] else ''}{' unlisted' if v["unlisted"] else ''}">
                         <h3 class="title">{html.escape(v['title'])}</h3>
-                        <p>{v.get('view_count', -1)} views, {upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:]}</p>
+                        <p>{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:]}</p>
                       </div>
                     </a>
                 </div>

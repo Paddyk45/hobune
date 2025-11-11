@@ -1,12 +1,12 @@
 <div class="container channels">
-  <div class="head">
-    <div class="title">
-      <h1 style="display: inline-block;">{channel}</h1>
-      {subtitle}
-    </div>
-    <div>
-      <div>
-        <select name="sort" class="sort{sort}" oninput="channelSort()">
+    <div class="head">
+        <div class="title">
+            <h1 style="display: inline-block;">{channel}</h1>
+            {subtitle}
+        </div>
+        <div>
+            <div>
+                <select name="sort" class="sort{sort}" oninput="channelSort()">
           <option value="date-a">Date (asc)</option>
           <option value="date-" selected>Date (desc)</option>
           <option value="search-a">Name (asc)</option>
@@ -14,12 +14,12 @@
           <option value="views-a">Views (asc)</option>
           <option value="views-">Views (desc)</option>
         </select>
-        <input type="text" class="search" oninput="channelSearch()" placeholder="Search...">
-      </div>
+                <input type="text" class="search" oninput="channelSearch()" placeholder="Search...">
+            </div>
+        </div>
     </div>
-  </div>
-  {note}
-  <div class="channels flex-grid">
-    {cards}
-  </div>
+    {note}
+    <div class="channels flex-grid">
+        {cards}
+    </div>
 </div>

@@ -5,7 +5,7 @@ import os
 from hobune.channels import is_full_channel, get_channel_name
 from hobune.comments import getCommentsHTML
 from hobune.logger import logger
-from hobune.util import generate_meta_tags, quote_url, no_traverse
+from hobune.util import generate_meta_tags, generate_meta_property_tags, quote_url, no_traverse
 
 
 def generate_download_button(name, url, prefix="/dl"):
@@ -33,26 +33,36 @@ def create_video_pages(config, channels, templates, html_ext):
             try:
                 with open(os.path.join(root, file), "r") as f:
                     v = json.load(f)
-                page_meta = generate_meta_tags(
-                    {
-                        "description": v['description'][:256],
-                        "author": get_channel_name(v)
-                    }
-                )
-                # Generate comments
-                comments_html, comments_count = getCommentsHTML(html.escape(v['title']), v['id'])
-                comments_link = ""
-                if comments_html:
-                    with open(os.path.join(config.output_path, f"comments/{no_traverse(v['id'])}.html"), "w") as f:
-                        f.write(templates["base"].format(title=html.escape(v['title'] + ' - Comments'), meta=page_meta,
-                                                         content=comments_html))
-                    comments_link = f'<p class="comments"><a href="/comments/{v["id"]}{html_ext}">View comments ({comments_count})</a></p>'
+
                 # Set mp4 path
                 mp4path = f"{os.path.join(config.files_web_path + root[len(config.files_path):], base)}.mp4"
                 for ext in ["mp4", "webm", "mkv"]:
                     if f"{base}.{ext}" in files:
                         mp4path = f"{os.path.join(config.files_web_path + root[len(config.files_path):], base)}.{ext}"
                         break
+                        
+                page_meta = generate_meta_tags(
+                    {
+                        "description": v['description'][:256],
+                        "author": get_channel_name(v)
+                    }
+                )
+
+                page_meta += generate_meta_property_tags(
+                    {
+                        "og:video": quote_url(mp4path)
+                    }
+                )
+                
+                # Generate comments
+                comments_html, comments_count = getCommentsHTML(html.escape(v['title']), v['id'])
+                comments_link = ""
+                if comments_html:
+                    with open(os.path.join(config.output_path, f"comments/{no_traverse(v['id'])}.html"), "w") as f:
+                        f.write(templates["base"].format(title=html.escape(v['title'] + ' - Comments'), meta=page_meta+page_properties,
+                                                         content=comments_html))
+                    comments_link = f'<p class="comments"><a href="/comments/{v["id"]}{html_ext}">View comments ({comments_count})</a></p>'
+
 
                 # Get thumbnail path
                 thumbnail = "/default.png"
@@ -65,11 +75,10 @@ def create_video_pages(config, channels, templates, html_ext):
                 download_buttons_html = generate_download_button("Download video", mp4path)
 
                 # Create multiple video download buttons if we have multiple formats
-                for ext in ["webm", "mkv"]:
+                for ext in ["mp4", "webm", "mkv"]:
                     if (alt_file := f"{base}.{ext}") in files:
                         alt_file_url = config.files_web_path + (os.path.join(root, alt_file))[len(config.files_path):]
-                        download_buttons_html = generate_download_button("Download mp4", mp4path) + \
-                                                generate_download_button(f"Download {ext}", alt_file_url)
+                        download_buttons_html = generate_download_button(f"Download ({ext})", alt_file_url)
 
                 # Description download
                 if (desc_file := f"{base}.description") in files:
@@ -89,15 +98,16 @@ def create_video_pages(config, channels, templates, html_ext):
 
                 # Create HTML
                 upload_date = v.get('upload_date', "00000000")
+                release_date = v.get('release_date', None)
                 page_html = templates["video"].format(
                     title=html.escape(v['title']),
                     ytlink=f"<a class=\"ytlink\" href=https://www.youtube.com/watch?v={html.escape(v['id'])}>YT</a>",
                     description=html.escape(v.get('description', "N/A")).replace('\n', '<br>'),
-                    views=v.get('view_count', -1),
+                    # views=v.get('view_count', -1),
                     uploader_url=f"{config.web_root}channels/{html.escape(v.get('channel_id', v.get('uploader_id')))}{html_ext}" if is_full_channel(root) else f'{config.web_root}channels/other{html_ext}',
                     uploader_id={html.escape(v.get('channel_id', v.get('uploader_id')))},
                     uploader=html.escape(get_channel_name(v)),
-                    date=f"{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:]}",
+                    date=f"{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:]}" + (f" (released {release_date[:4]}-{release_date[4:6]}-{release_date[6:]})" if release_date is not None else ""),
                     video=quote_url(mp4path),
                     thumbnail=quote_url(thumbnail),
                     download=download_buttons_html,

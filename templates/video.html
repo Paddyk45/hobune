@@ -1,23 +1,22 @@
 <div class="container">
     <br>
-   <div class="ui">
-      <video controls poster="{thumbnail}" class="rounded video">
-         <source src="{video}" type="video/mp4">
-         Your browser does not support the video tag.
-      </video>
-   </div>
-   <div class="info">
-     <div class="main">
-       <h1>{title}</h1>
-       {comments}
-       <h2 class="subtitle">Description {ytlink}</h2>
-       <p>{description}</p>
-     </div>
-     <div class="side">
-       <p class="views">{views} views</p>
-       <p class="date">{date}</p>
-       <p class="uploader">Video by <a href="{uploader_url}" title="{uploader_id}">{uploader}</a></p>
-       {download}
-     </div>
-   </div>
+    <div class="ui">
+        <video controls poster="{thumbnail}" class="rounded video">
+                        <source src="{video}">
+                        Your browser does not support the video tag.
+                </video>
+    </div>
+    <div class="info">
+        <div class="main">
+            <h1>{title} {ytlink}</h1>
+            {comments}
+            <h2 class="subtitle">Description</h2>
+            <p>{description}</p>
+        </div>
+        <div class="side">
+            <p class="date">{date}</p>
+            <p class="uploader">Video by <a href="{uploader_url}" title="{uploader_id}">{uploader}</a></p>
+            {download}
+        </div>
+    </div>
 </div>

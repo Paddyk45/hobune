@@ -8,11 +8,20 @@ html, body {
     font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
     font-size: 14px;
     min-height: 100%;
+    background-color: #0b0e14;
 }
 
 a {
     color: #4183c4;
     text-decoration: none;
+}
+
+h1, h2 {
+	color: white;
+}
+
+p {
+	color: #bfbdb6;
 }
 
 :focus-visible {
@@ -81,16 +90,16 @@ a {
     font-weight: 700;
     font-size: 18px;
     margin-top: -2px;
-    color: rgba(0,0,0,.85);
+    color: white;
 }
 
 .card > .inner > .content .meta {
-    color: rgba(0,0,0,.4);
+    color: #bfbdb6;
     margin-bottom: 7px;
 }
 
 .card > .inner > .content .description {
-    color: rgba(0,0,0,.68);
+    color: #bfbdb6;
 }
 
 .card > .inner > .image {
@@ -284,12 +293,12 @@ a {
 .button.download {
     display: inline-block;
     border-radius: 4px;
-    color: rgba(0,0,0,.6);
+    color: white;
     font-weight: 700;
     font-size: 14px;
     padding: 8px 21px;
     margin-bottom: 0.3em;
-    background: #e0e1e2;
+    background: transparent;
 }
 
 .button.download:hover {
@@ -382,7 +391,7 @@ a {
 }
 
 .unlisted {
-    background-color: #fff1b4;
+    background-color: #555247;
 }
 
 .removed.unlisted {
